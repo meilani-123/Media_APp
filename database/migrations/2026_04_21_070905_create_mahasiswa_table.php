@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('nim')->unique();
             $table->string('nama_lengkap');
 
-            $table->foreignId('prodi_id')->references('prodi_id')->on('prodi');
+            $table->foreignId('prodi_id')
+                ->constrained('prodi', 'prodi_id')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

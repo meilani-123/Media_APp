@@ -12,13 +12,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('media', function (Blueprint $table) {
-            $table->id('media_id');
+            $table->id('media_id'); // primary key
+
+            $table->unsignedBigInteger('mahasiswa_id');
+            $table->unsignedBigInteger('kategori_id');
+
             $table->string('judul');
             $table->text('deskripsi');
-            $table->string('file_url');
+            $table->string('judul_penelitian');
+            $table->year('tahun_terbit');
+            $table->string('link_media');
+            $table->string('gambar_cover')->nullable();
 
-            $table->foreignId('mahasiswa_id')->references('mahasiswa_id')->on('mahasiswa');
-            $table->foreignId('kategori_id')->references('kategori_id')->on('kategori');
+            $table->foreign('mahasiswa_id')
+                ->references('mahasiswa_id')
+                ->on('mahasiswa')
+                ->onDelete('cascade');
+
+            $table->foreign('kategori_id')
+                ->references('kategori_id')
+                ->on('kategori')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

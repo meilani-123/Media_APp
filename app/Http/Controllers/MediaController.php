@@ -39,9 +39,9 @@ class MediaController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'judul_penelitian' => 'required|string|max:255',
-            'tahun_terbit' => 'required|digits:4|integer',
-            'link_media' => 'required|url',
-            'gambar_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'tahun_terbit' => 'required|digits:4',
+            'link_media' => 'required',
+            'gambar_cover' => 'nullable'
         ]);
 
         // cek jika ada eror validasi form
@@ -93,11 +93,14 @@ class MediaController extends Controller
 
         // validasi form
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
-            'id_prodi' => 'required',
-            'id_kategori' => 'required',
-            'deskripsi' => 'required',
-            'file_media' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,zip,rar,7z|max:2048'
+            'mahasiswa_id' => 'required|exists:mahasiswa,mahasiswa_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'judul_penelitian' => 'required|string|max:255',
+            'tahun_terbit' => 'required|digits:4',
+            'link_media' => 'required',
+            'gambar_cover' => 'nullable'
         ]);
 
         // cek jika ada eror validasi form
