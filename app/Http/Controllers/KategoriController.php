@@ -6,18 +6,19 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Prodi;
+use App\Models\Kategori;
+use Laravel\Prompts\Key;
 
-class ProdiController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $prodi = Prodi::get();
+        $kategori = Kategori::get();
 
-        return response()->json($prodi);
+        return response()->json($kategori);
     }
 
     /**
@@ -35,8 +36,7 @@ class ProdiController extends Controller
     {
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'nama_kategori' => 'required',
         ]);
 
         // cek jika ada eror validasi form
@@ -48,9 +48,9 @@ class ProdiController extends Controller
         }
 
         // menyimpan data
-        $prodi = new Prodi;
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $kategori = new Kategori;
+        $kategori->fill($request->all());
+        $simpan = $kategori->save();
 
         if ($simpan) {
             return response()->json([
@@ -87,8 +87,7 @@ class ProdiController extends Controller
     {
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'nama_kategori' => 'required',
         ]);
 
         // cek jika ada eror validasi form
@@ -100,10 +99,10 @@ class ProdiController extends Controller
         }
 
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $kategori = Kategori::find($id);
 
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $kategori) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
@@ -111,8 +110,8 @@ class ProdiController extends Controller
         }
 
         // update data
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $kategori->fill($request->all());
+        $simpan = $kategori->save();
 
         if ($simpan) {
             return response()->json([
@@ -132,16 +131,16 @@ class ProdiController extends Controller
     public function destroy(string $id)
     {
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $kategori = Kategori::find($id);
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $kategori) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
             ], 422);
         }
 
-        $hapus = $prodi->delete();
+        $hapus = $kategori->delete();
         if ($hapus) {
             return response()->json([
                 'status' => 'success',

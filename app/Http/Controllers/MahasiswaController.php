@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Prodi;
+use App\Models\Mahasiswa;
 
-class ProdiController extends Controller
+class MahasiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $prodi = Prodi::get();
+        $mahasiswa = Mahasiswa::get();
 
-        return response()->json($prodi);
+        return response()->json($mahasiswa);
     }
 
     /**
@@ -35,8 +35,9 @@ class ProdiController extends Controller
     {
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'nim' => 'required',
+            'nama_lengkap' => 'required',
+            'prodi_id' => 'required|exists:prodi,prodi_id',
         ]);
 
         // cek jika ada eror validasi form
@@ -48,9 +49,9 @@ class ProdiController extends Controller
         }
 
         // menyimpan data
-        $prodi = new Prodi;
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $mahasiswa = new Mahasiswa;
+        $mahasiswa->fill($request->all());
+        $simpan = $mahasiswa->save();
 
         if ($simpan) {
             return response()->json([
@@ -87,8 +88,9 @@ class ProdiController extends Controller
     {
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'nim' => 'required',
+            'nama_lengkap' => 'required',
+            'prodi_id' => 'required|exists:prodi,prodi_id',
         ]);
 
         // cek jika ada eror validasi form
@@ -100,10 +102,10 @@ class ProdiController extends Controller
         }
 
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $mahasiswa = Mahasiswa::find($id);
 
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $mahasiswa) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
@@ -111,8 +113,8 @@ class ProdiController extends Controller
         }
 
         // update data
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $mahasiswa->fill($request->all());
+        $simpan = $mahasiswa->save();
 
         if ($simpan) {
             return response()->json([
@@ -132,16 +134,16 @@ class ProdiController extends Controller
     public function destroy(string $id)
     {
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $mahasiswa = Mahasiswa::find($id);
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $mahasiswa) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
             ], 422);
         }
 
-        $hapus = $prodi->delete();
+        $hapus = $mahasiswa->delete();
         if ($hapus) {
             return response()->json([
                 'status' => 'success',

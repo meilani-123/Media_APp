@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Prodi;
+use App\Models\Media;
 
-class ProdiController extends Controller
+class MediaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $prodi = Prodi::get();
+        $media = Media::get();
 
-        return response()->json($prodi);
+        return response()->json($media);
     }
 
     /**
@@ -33,10 +33,15 @@ class ProdiController extends Controller
      */
     public function store(Request $request)
     {
-        // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'mahasiswa_id' => 'required|exists:mahasiswa,mahasiswa_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'judul_penelitian' => 'required|string|max:255',
+            'tahun_terbit' => 'required|digits:4|integer',
+            'link_media' => 'required|url',
+            'gambar_cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         // cek jika ada eror validasi form
@@ -48,9 +53,9 @@ class ProdiController extends Controller
         }
 
         // menyimpan data
-        $prodi = new Prodi;
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $media = new Media;
+        $media->fill($request->all());
+        $simpan = $media->save();
 
         if ($simpan) {
             return response()->json([
@@ -85,10 +90,14 @@ class ProdiController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nama_prodi' => 'required',
-            'singkatan' => 'required'
+            'judul' => 'required',
+            'id_prodi' => 'required',
+            'id_kategori' => 'required',
+            'deskripsi' => 'required',
+            'file_media' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,zip,rar,7z|max:2048'
         ]);
 
         // cek jika ada eror validasi form
@@ -100,10 +109,10 @@ class ProdiController extends Controller
         }
 
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $media = Media::find($id);
 
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $media) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
@@ -111,8 +120,8 @@ class ProdiController extends Controller
         }
 
         // update data
-        $prodi->fill($request->all());
-        $simpan = $prodi->save();
+        $media->fill($request->all());
+        $simpan = $media->save();
 
         if ($simpan) {
             return response()->json([
@@ -132,16 +141,16 @@ class ProdiController extends Controller
     public function destroy(string $id)
     {
         // cari data berdasarkan id
-        $prodi = Prodi::find($id);
+        $media = Media::find($id);
         // jika data tidak ditemukan
-        if (! $prodi) {
+        if (! $media) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'Data tidak ditemukan'
             ], 422);
         }
 
-        $hapus = $prodi->delete();
+        $hapus = $media->delete();
         if ($hapus) {
             return response()->json([
                 'status' => 'success',
