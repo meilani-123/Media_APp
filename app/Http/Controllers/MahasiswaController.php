@@ -35,9 +35,9 @@ class MahasiswaController extends Controller
     {
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nim' => 'required|unique:mahasiswa,nim',
+            'nim' => 'required',
             'nama_lengkap' => 'required',
-            'prodi_id' => 'required|exists:prodi,prodi_id',
+            'prodi_id' => 'required'
         ]);
 
         // cek jika ada eror validasi form
@@ -86,12 +86,11 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         // validasi form
         $validator = Validator::make($request->all(), [
-            'nim' => 'required|unique:mahasiswa,nim,' . $id . ',mahasiswa_id',
+            'nim' => 'required',
             'nama_lengkap' => 'required',
-            'prodi_id' => 'required|exists:prodi,prodi_id',
+            'prodi_id' => 'required'
         ]);
 
         // cek jika ada eror validasi form
